@@ -10,7 +10,7 @@ This assembly targets Net 7 and has nullability enabled.
 
 The library repository is available on [github](https://github.com/markolbert/ProgrammingUtilities/blob/master/TopologicalSort/docs/readme.md).
 
-The change log is [available here](changes.md).
+The change log is [available here](docs/changes.md).
 
 - [J4JSoftware.TopologicalSort](#j4jsoftwaretopologicalsort)
   - [Topological Sort](#topological-sort)
@@ -33,7 +33,7 @@ To make matters worse I kept having to add new processing steps. Keeping track o
 
 A picture may help:
 
-![topological actions](assets/topo-actions.png)
+![topological actions](docs/assets/topo-actions.png)
 
 The key player, from the point of view of using the system, is `Actions`. You use it by deriving your own subclass from it, overriding its `Initialize()` and `Finalize()` methods.
 
