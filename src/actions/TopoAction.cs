@@ -1,4 +1,5 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
 // TopoAction.cs
@@ -17,6 +18,7 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using Microsoft.Extensions.Logging;
@@ -25,8 +27,8 @@ namespace J4JSoftware.Utilities;
 
 public abstract class TopoAction<TSource> : IAction<TSource>
 {
-    protected TopoAction( 
-        ILoggerFactory? loggerFactory 
+    protected TopoAction(
+        ILoggerFactory? loggerFactory
     )
     {
         Logger = loggerFactory?.CreateLogger( GetType() );
@@ -65,15 +67,9 @@ public abstract class TopoAction<TSource> : IAction<TSource>
         return false;
     }
 
-    protected virtual bool Initialize( TSource src )
-    {
-        return true;
-    }
+    protected virtual bool Initialize( TSource src ) => true;
 
-    protected virtual bool Finalize( TSource src )
-    {
-        return true;
-    }
+    protected virtual bool Finalize( TSource src ) => true;
 
     protected abstract bool ProcessLoop( TSource src );
 }

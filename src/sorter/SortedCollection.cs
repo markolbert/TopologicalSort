@@ -1,4 +1,5 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
 // SortedCollection.cs
@@ -17,6 +18,7 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System.Collections.Generic;
@@ -28,20 +30,20 @@ namespace J4JSoftware.Utilities;
 public abstract class SortedCollection<T> : ISortedCollection<T>
     where T : class, ISortable<T>
 {
-    private readonly List<int> _activatedIndices = new();
-    private readonly List<T> _items = new();
+    private readonly List<int> _activatedIndices = [];
+    private readonly List<T> _items = [];
 
     private List<T>? _sorted;
 
-    protected SortedCollection( 
-        ILoggerFactory? loggerFactory = null 
-        )
+    protected SortedCollection(
+        ILoggerFactory? loggerFactory = null
+    )
     {
         Logger = loggerFactory?.CreateLogger( GetType() );
     }
 
     protected ILogger? Logger { get; }
-    protected List<T> Available { get; } = new();
+    protected List<T> Available { get; } = [];
 
     public List<T> SortedSequence
     {
@@ -81,8 +83,11 @@ public abstract class SortedCollection<T> : ISortedCollection<T>
             return retVal;
 
         // remove the items that were activated. there should
-        // be only one item left, the root item, afterwards
-        foreach( var idx in _activatedIndices.OrderByDescending( x => x ) ) Available.RemoveAt( idx );
+        // be only one item left (the root item)
+        foreach( var idx in _activatedIndices.OrderByDescending( x => x ) )
+        {
+            Available.RemoveAt( idx );
+        }
 
         switch( Available.Count )
         {

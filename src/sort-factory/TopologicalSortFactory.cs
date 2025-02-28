@@ -1,4 +1,5 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
 // TopologicalSortFactory.cs
@@ -17,6 +18,7 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
@@ -30,9 +32,9 @@ public class TopologicalSortFactory : ITopologicalSortFactory
 {
     private readonly ILogger? _logger;
 
-    public TopologicalSortFactory( 
-        ILoggerFactory? loggerFactory = null 
-        )
+    public TopologicalSortFactory(
+        ILoggerFactory? loggerFactory = null
+    )
     {
         _logger = loggerFactory?.CreateLogger( GetType() );
     }
@@ -80,9 +82,9 @@ public class TopologicalSortFactory : ITopologicalSortFactory
 
                     if( predecessor == null )
                     {
-                        _logger?.LogError("Could not find {0} type '{1}'",
-                            typeof(T),
-                            predecessorType.Name);
+                        _logger?.LogError( "Could not find {0} type '{1}'",
+                                           typeof( T ),
+                                           predecessorType.Name );
                         return false;
                     }
 

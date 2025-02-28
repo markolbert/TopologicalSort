@@ -1,7 +1,8 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
-// IAction.cs
+// ISortedCollection.cs
 //
 // This file is part of JumpForJoy Software's TopologicalSort.
 // 
@@ -17,18 +18,16 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace J4JSoftware.Utilities;
 
-public interface IAction
+public interface ISortedCollection<TNode>
+    where TNode : IEquatable<TNode>
 {
-    bool Process( object src );
-}
-
-public interface IAction<TSource> : IAction, IEquatable<IAction<TSource>>
-{
-    bool Process( TSource src );
+    public List<TNode> SortedSequence { get; }
 }

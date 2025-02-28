@@ -1,4 +1,5 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
 // Nodes.cs
@@ -17,6 +18,7 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
@@ -25,17 +27,11 @@ using System.Linq;
 
 namespace J4JSoftware.Utilities;
 
-public class Nodes<T>
+public class Nodes<T>( IEqualityComparer<T>? comparer = null )
     where T : class, IEquatable<T>
 {
-    private readonly IEqualityComparer<T>? _comparer;
-    private readonly HashSet<NodeDependency<T>> _dependencies = new();
-    private readonly HashSet<Node<T>> _nodes = new();
-
-    public Nodes( IEqualityComparer<T>? comparer = null )
-    {
-        _comparer = comparer;
-    }
+    private readonly HashSet<NodeDependency<T>> _dependencies = [];
+    private readonly HashSet<Node<T>> _nodes = [];
 
     public void Clear()
     {
@@ -43,19 +39,21 @@ public class Nodes<T>
         _dependencies.Clear();
     }
 
-    public bool ValuesAreEqual( T x, T y ) => _comparer?.Equals( x, y ) ?? x.Equals( y );
+    public bool ValuesAreEqual( T x, T y ) => comparer?.Equals( x, y ) ?? x.Equals( y );
 
     public bool NodesAreEqual( Node<T> x, Node<T> y ) =>
-        _comparer?.Equals( x.Value, y.Value ) ?? x.Value.Equals( y.Value );
+        comparer?.Equals( x.Value, y.Value ) ?? x.Value.Equals( y.Value );
 
     public bool DependenciesAreEqual( NodeDependency<T> x, NodeDependency<T> y )
     {
-        if( _comparer == null )
+        if( comparer == null )
+        {
             return x.AncestorNode.Value.Equals( y.AncestorNode.Value )
              && x.DependentNode.Value.Equals( y.DependentNode.Value );
+        }
 
-        return _comparer.Equals( x.AncestorNode.Value, y.AncestorNode.Value )
-         && _comparer.Equals( x.DependentNode.Value, y.DependentNode.Value );
+        return comparer.Equals( x.AncestorNode.Value, y.AncestorNode.Value )
+         && comparer.Equals( x.DependentNode.Value, y.DependentNode.Value );
     }
 
     public List<Node<T>> GetDependents( Node<T> ancestor )
@@ -89,7 +87,7 @@ public class Nodes<T>
         if( retVal != null )
             return retVal;
 
-        retVal = new Node<T>( value, this, _comparer );
+        retVal = new Node<T>( value, this, comparer );
         _nodes.Add( retVal );
 
         return retVal;
@@ -121,11 +119,16 @@ public class Nodes<T>
         var edgesToRemove = new List<NodeDependency<T>>();
 
         foreach( var dependency in _dependencies )
+        {
             if( ValuesAreEqual( dependency.AncestorNode.Value, toRemove )
             || ValuesAreEqual( dependency.DependentNode.Value, toRemove ) )
                 edgesToRemove.Add( dependency );
+        }
 
-        foreach( var edgeToRemove in edgesToRemove ) _dependencies.Remove( edgeToRemove );
+        foreach( var edgeToRemove in edgesToRemove )
+        {
+            _dependencies.Remove( edgeToRemove );
+        }
 
         return _nodes.Remove( node );
     }

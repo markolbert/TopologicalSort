@@ -1,7 +1,8 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
-// Node.cs
+// IAction.cs
 //
 // This file is part of JumpForJoy Software's TopologicalSort.
 // 
@@ -17,40 +18,19 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace J4JSoftware.Utilities;
 
-public class Node<T>
-    where T : class, IEquatable<T>
+public interface IAction
 {
-    private readonly IEqualityComparer<T>? _comparer;
+    bool Process( object src );
+}
 
-    public Node( T value,
-        Nodes<T> collection,
-        IEqualityComparer<T>? comparer = null )
-    {
-        Value = value;
-        Collection = collection;
-        _comparer = comparer;
-    }
-
-    public T Value { get; }
-    public Nodes<T> Collection { get; }
-    public List<Node<T>> Dependents => Collection.GetDependents( this );
-    public List<Node<T>> Ancestors => Collection.GetAncestors( this );
-
-    public bool Equals( Node<T>? other )
-    {
-        if( other == null )
-            return false;
-
-        if( _comparer == null )
-            return other.Value.Equals( Value );
-
-        return _comparer.Equals( Value, other.Value );
-    }
+public interface IAction<TSource> : IAction, IEquatable<IAction<TSource>>
+{
+    bool Process( TSource src );
 }

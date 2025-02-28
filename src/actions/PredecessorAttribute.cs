@@ -1,7 +1,8 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
-// ISortable.cs
+// PredecessorAttribute.cs
 //
 // This file is part of JumpForJoy Software's TopologicalSort.
 // 
@@ -17,14 +18,15 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
 
 namespace J4JSoftware.Utilities;
 
-public interface ISortable<TNode> : IEquatable<TNode>
-    where TNode : class
+[ AttributeUsage( AttributeTargets.Class, Inherited = false ) ]
+public class PredecessorAttribute( Type? predecessor ) : Attribute
 {
-    TNode? Predecessor { get; set; }
+    public Type? Predecessor { get; } = predecessor;
 }

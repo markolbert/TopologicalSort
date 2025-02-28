@@ -1,4 +1,5 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
 // PredecessorList.cs
@@ -17,6 +18,7 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
@@ -29,11 +31,12 @@ namespace J4JSoftware.Utilities;
 
 public static class TopologicalSortExtensions
 {
-    public static Nodes<T> ToNodeList<T>( 
-        this IEnumerable<T> source, 
+    public static Nodes<T> ToNodeList<T>(
+        this IEnumerable<T> source,
         IEqualityComparer<T>? comparer = null,
-        ILogger? logger = null )
-        where T: class, IEquatable<T>
+        ILogger? logger = null
+    )
+        where T : class, IEquatable<T>
     {
         var retVal = new Nodes<T>( comparer );
 
@@ -44,10 +47,12 @@ public static class TopologicalSortExtensions
         {
             var nodeType = node.GetType();
 
-            var predAttr = nodeType.GetCustomAttribute<PredecessorAttribute>(false);
+            var predAttr = nodeType.GetCustomAttribute<PredecessorAttribute>( false );
             if( predAttr == null )
             {
-                logger?.LogError("Node type '{0}' (item {1}) is not decorated with a PredecessorAttribute", nodeType, idx );
+                logger?.LogError( "Node type '{0}' (item {1}) is not decorated with a PredecessorAttribute",
+                                  nodeType,
+                                  idx );
                 continue;
             }
 
@@ -55,14 +60,14 @@ public static class TopologicalSortExtensions
                 retVal.AddIndependentNode( node );
             else
             {
-                var predecessor = nodeList.FirstOrDefault(x => x.GetType() == predAttr.Predecessor);
-                if (predecessor == null)
+                var predecessor = nodeList.FirstOrDefault( x => x.GetType() == predAttr.Predecessor );
+                if( predecessor == null )
                 {
                     logger?.LogCritical( "Couldn't find predecessor extractor {0}", predAttr.Predecessor.Name );
                     continue;
                 }
 
-                retVal.AddDependentNode(node, predecessor);
+                retVal.AddDependentNode( node, predecessor );
             }
 
             idx++;

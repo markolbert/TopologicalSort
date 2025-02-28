@@ -1,4 +1,5 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
 // Actions.cs
@@ -17,6 +18,7 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using Microsoft.Extensions.Logging;
@@ -25,10 +27,10 @@ namespace J4JSoftware.Utilities;
 
 public abstract class Actions<TSource> : Nodes<IAction<TSource>>, IAction<TSource>
 {
-    protected Actions( 
+    protected Actions(
         ActionsContext context,
-        ILoggerFactory? loggerFactory = null 
-        )
+        ILoggerFactory? loggerFactory = null
+    )
     {
         Context = context;
 
@@ -45,7 +47,7 @@ public abstract class Actions<TSource> : Nodes<IAction<TSource>>, IAction<TSourc
 
         var allOkay = true;
 
-        if( !Sort( out var actions, out var _ ) )
+        if( !Sort( out var actions, out _ ) )
         {
             Logger?.LogError( "Couldn't topologically sort actions" );
             return false;
@@ -84,13 +86,7 @@ public abstract class Actions<TSource> : Nodes<IAction<TSource>>, IAction<TSourc
         return false;
     }
 
-    protected virtual bool Initialize( TSource src )
-    {
-        return true;
-    }
+    protected virtual bool Initialize( TSource src ) => true;
 
-    protected virtual bool Finalize( TSource src )
-    {
-        return true;
-    }
+    protected virtual bool Finalize( TSource src ) => true;
 }

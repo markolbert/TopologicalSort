@@ -1,7 +1,8 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
-// PredecessorAttribute.cs
+// Node.cs
 //
 // This file is part of JumpForJoy Software's TopologicalSort.
 // 
@@ -17,21 +18,34 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace J4JSoftware.Utilities;
 
-[ AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = false ) ]
-public class PredecessorAttribute : Attribute
+public class Node<T>(
+    T value,
+    Nodes<T> collection,
+    IEqualityComparer<T>? comparer = null
+)
+    where T : class, IEquatable<T>
 {
-    public PredecessorAttribute(
-        Type? predecessor
-    )
-    {
-        Predecessor = predecessor;
-    }
+    public T Value { get; } = value;
+    public Nodes<T> Collection { get; } = collection;
+    public List<Node<T>> Dependents => Collection.GetDependents( this );
+    public List<Node<T>> Ancestors => Collection.GetAncestors( this );
 
-    public Type? Predecessor { get; }
+    public bool Equals( Node<T>? other )
+    {
+        if( other == null )
+            return false;
+
+        if( comparer == null )
+            return other.Value.Equals( Value );
+
+        return comparer.Equals( Value, other.Value );
+    }
 }

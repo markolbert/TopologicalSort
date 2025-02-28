@@ -1,4 +1,5 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
 // TopologicalSorter.cs
@@ -17,6 +18,7 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System.Collections.Generic;
@@ -28,8 +30,10 @@ namespace J4JSoftware.Utilities;
 // topological sorting algorithm!!
 public static class TopologicalSorter
 {
-    public static bool Sort<TNode>( IEnumerable<TNode> items,
-        out List<TNode>? result )
+    public static bool Sort<TNode>(
+        IEnumerable<TNode> items,
+        out List<TNode>? result
+    )
         where TNode : class, ISortable<TNode>
     {
         var available = items.ToList();

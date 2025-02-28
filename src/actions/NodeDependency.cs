@@ -1,7 +1,8 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
-// ISortedCollection.cs
+// NodeDependency.cs
 //
 // This file is part of JumpForJoy Software's TopologicalSort.
 // 
@@ -17,15 +18,16 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace J4JSoftware.Utilities;
 
-public interface ISortedCollection<TNode>
-    where TNode : IEquatable<TNode>
+public class NodeDependency<T>( Node<T> dependent, Node<T> ancestor )
+    where T : class, IEquatable<T>
 {
-    public List<TNode> SortedSequence { get; }
+    public Node<T> AncestorNode { get; } = ancestor;
+    public Node<T> DependentNode { get; } = dependent;
 }

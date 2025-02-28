@@ -1,7 +1,8 @@
 ﻿#region copyright
+
 // Copyright (c) 2021, 2022, 2023 Mark A. Olbert 
 // https://www.JumpForJoySoftware.com
-// TopologicalRootAttribute.cs
+// TopologicalPredecessorAttribute.cs
 //
 // This file is part of JumpForJoy Software's TopologicalSort.
 // 
@@ -17,13 +18,15 @@
 // 
 // You should have received a copy of the GNU General Public License along 
 // with TopologicalSort. If not, see <https://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
 
 namespace J4JSoftware.Utilities;
 
-[ AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = false ) ]
-public class TopologicalRootAttribute : Attribute
+[ AttributeUsage( AttributeTargets.Class, AllowMultiple = true, Inherited = false ) ]
+public class TopologicalPredecessorAttribute( Type predecessorType ) : Attribute
 {
+    public Type PredecessorType { get; } = predecessorType;
 }
